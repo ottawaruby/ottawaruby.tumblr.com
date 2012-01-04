@@ -256,10 +256,17 @@
       </div>
       <div id="header-info">
         <h1><img src="http://static.tumblr.com/hncmesq/dsXlvwy4y/ottawa_ruby.png" /></h1>
+<<<<<<< HEAD
              <h2></h2>
               <h3><span id="event-date"></span> @ <span id="event-venue"></span></h3>
               <div id="rsvp"><a href="#" class="big-button" target="_blank">RSVP!</a></div>         
             </div>
+=======
+        <h2>Monthly Meetup</h2>
+        <h3><span id='upcoming-meetup-date'>loading</span> @ Shopify <a href="#">(map)</a></h3>
+        <div id="rsvp"><a href="#" class="big-button">RSVP!</a></div>         
+      </div>
+>>>>>>> Fixed next event date loading
     </header>
     <div id="main" role="main">
       <section id="posts" class="clearfix">
@@ -503,10 +510,23 @@
   </div> <!-- end of #container -->
 
 
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="js/libs/jquery-1.6.2.min.js"><\/script>')</script>
   <script src="/js/jquery.fittext.js"></script>
-
+  
+  <script>
+  $(document).ready(function(){
+    $(".entry img").parent('p').css('text-align','center');
+    var url = "http://api.meetup.com/2/events?key=7f3124d78666958d1015802b334d1c&sign=true&group_id=1523801&page=1&callback=?";
+    $.getJSON(url,{},function(data) {
+      // alert(data.results[0].event_url);
+      var meetupUtcSeconds = data.results[0].time / 1000;
+      var d = new Date(0);
+      d.setUTCSeconds(meetupUtcSeconds);
+      $('#upcoming-meetup-date').text(d.toLocaleDateString() + ', ' + d.getHours() + ':' + d.getMinutes());
+    });
+  });
+  </script>
 
   <!--[if lt IE 7 ]>
   <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
