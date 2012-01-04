@@ -256,17 +256,10 @@
       </div>
       <div id="header-info">
         <h1><img src="http://static.tumblr.com/hncmesq/dsXlvwy4y/ottawa_ruby.png" /></h1>
-<<<<<<< HEAD
-             <h2></h2>
-              <h3><span id="event-date"></span> @ <span id="event-venue"></span></h3>
-              <div id="rsvp"><a href="#" class="big-button" target="_blank">RSVP!</a></div>         
-            </div>
-=======
         <h2>Monthly Meetup</h2>
-        <h3><span id='upcoming-meetup-date'>loading</span> @ Shopify <a href="#">(map)</a></h3>
-        <div id="rsvp"><a href="#" class="big-button">RSVP!</a></div>         
+        <h3><span id='upcoming-event-date'>loading</span> @ <span id='event-venue'>Shopify</span> <a href="#">(map)</a></h3>
+        <div id="rsvp"><a href="#" class="big-button" target="_blank">RSVP!</a></div>
       </div>
->>>>>>> Fixed next event date loading
     </header>
     <div id="main" role="main">
       <section id="posts" class="clearfix">
@@ -422,7 +415,6 @@
                 
             </div>
         {/block:Posts}
-
         
         {block:Pagination}
             <div id="navigation" {block:IfEnableJumpPagination}class="jump_pagination"{/block:IfEnableJumpPagination}>
@@ -518,12 +510,20 @@
   $(document).ready(function(){
     $(".entry img").parent('p').css('text-align','center');
     var url = "http://api.meetup.com/2/events?key=7f3124d78666958d1015802b334d1c&sign=true&group_id=1523801&page=1&callback=?";
-    $.getJSON(url,{},function(data) {
-      // alert(data.results[0].event_url);
+    $.getJSON(url, {}, function(data) {
+      var eventName = data.results[0].name;
+      var eventUrl = data.results[0].event_url;
+      var eventVenue = data.results[0].venue.name;
+      
       var meetupUtcSeconds = data.results[0].time / 1000;
       var d = new Date(0);
       d.setUTCSeconds(meetupUtcSeconds);
-      $('#upcoming-meetup-date').text(d.toLocaleDateString() + ', ' + d.getHours() + ':' + d.getMinutes());
+      
+      $('#upcoming-event-date').text(d.toLocaleDateString() + ', ' + d.getHours() + ':' + d.getMinutes());
+      $("#rsvp a").attr("href", eventUrl);
+      $("#header-info h2").html(eventName);
+      $("#event-venue").html(eventVenue);
+      $("#rsvp a").attr("href", eventUrl);
     });
   });
   </script>
@@ -553,46 +553,5 @@
           //]]>
       </script>
   {/block:IfDisqusShortname}
-  
-  
-  
-    <script>
-    $(document).ready(function(){
-
-      //Just centering some images, no biggy
-      $(".entry img").parent('p').css('text-align','center');
-
-
-      var url = "http://api.meetup.com/2/events?key=7f3124d78666958d1015802b334d1c&sign=true&group_id=1523801&page=1&callback=?";
-
-      $.getJSON(url,{},function(data) {
-
-          var event_name = data.results[0].name;
-          var event_url= data.results[0].event_url;
-          var event_venue = data.results[0].venue.name;
-          var event_time = data.results[0].time;
-          var event_date = new Date(event_time).toUTCString();
-          //dateFormat(event_date, "dddd, mmmm dS, yyyy, h:MM:ss TT");
-          
-
-          $("#header-info h2").html(event_name);
-          $("#event-date").html(event_date);
-          $("#event-venue").html(event_venue);
-          $("#rsvp a").attr("href",event_url);
-
-
-        });
-
-
-
-    }); 
-
-  //   
-  //   function awesome(data){
-  // //    alert(data.results[0].status);
-  //   }
-
-    </script>
-  
 </body>
 </html>
