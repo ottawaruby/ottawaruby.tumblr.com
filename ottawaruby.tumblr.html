@@ -141,7 +141,9 @@
                   -webkit-box-shadow: 2px 2px #f0bebe;
                   box-shadow: 2px 2px #f0bebe;
       }
-    #search-bar{width:79%; background:#fff url('http://static.tumblr.com/2fscyps/NThlwfh15/search.png') 5px 2px no-repeat; border:1px solid #EFCDCD; padding:6px 6px 6px 35px;}
+    #search{position:absolute; top:30px; right:5px; font-size:0.8em; width:140px;}
+    #search-bar{background:#F5DFDF url('http://static.tumblr.com/wwordbw/7nklxkdlg/search.png') 5px 1px no-repeat; border:1px solid #EFCDCD; padding:4px 5px 2px 25px; color:#c9a6a6; width:110px;}
+    #search-bar:active, #search-bar:focus{background-color:#fff; color:#000;}
     #search-scope{margin-top:5px;}
 
     #sidebar{width:24.2424242424%; font-size:0.95em; float:left;}
@@ -165,12 +167,9 @@
 
     /***entry***/
     .entry{padding:60px 60px 0 60px; position:relative;}
-    .entry img{max-width:100%; height:auto;
-    }
+    .entry img{max-width:100%; height:auto;}
     .entry .title{font-weight:bold; font-size:1.3em; margin-bottom:1em;}
-    .entry h2{}
-    .entry .more{text-align:right; }
-
+    .entry .more{text-align:right;}
     .post-img{position:absolute; left:-32px;} 
     footer{padding-top:10px; font-size:10px;}
 
@@ -204,7 +203,6 @@
     	#header-info h3{margin:0 auto;}
     	#sidebar h4{border:none;}
     	section#posts{padding-bottom:10px;}
-    	      #search-bar{width:60%;}
     }
 
 
@@ -219,10 +217,12 @@
       #header-info h3{font-size:1em; width:250px;}
       .post-img{position:absolute; left:-32px; width:50px !important; height:auto;} 
       .entry{padding:50px 30px 0;}
-
-
     }
-
+    
+    @media only screen and (max-width: 320px) {
+      header{padding-top:70px;}    
+    
+    }
 
 
     /* ==|== print styles ======================================================= */
@@ -257,10 +257,24 @@
       <div id="header-info">
         <h1><img src="http://static.tumblr.com/hncmesq/dsXlvwy4y/ottawa_ruby.png" /></h1>
         <h2>Monthly Meetup</h2>
-        <h3><span id='upcoming-event-date'>loading</span> @ <span id='event-venue'>Shopify</span> <a href="#">(map)</a></h3>
+        <h3><span id='upcoming-event-date'>loading</span> @ <span id='event-venue'>Shopify</span></h3>
         <div id="rsvp"><a href="#" class="big-button" target="_blank">RSVP!</a></div>
       </div>
     </header>
+    <div id="search">
+        <form action="/search" method="get" id="search-form">
+            <input type="hidden" name="t" value="{Name}" />
+            <input type="hidden" name="scope" value="all_of_tumblr" />
+            <input type="text" name="q" class="query" value="Search..." rel="Search..." id="search-bar" />
+            <!-- <input type="submit" value="{lang:Search}" id="search-btn" /> -->
+            <div class="clear"></div>
+        </form>
+        <div id="search-scope">
+             <input type="radio" id="search-scope-me" name="scope" checked onclick="document.getElementById('search-form').action='/search'" /> <label for="search-scope-me" onclick="document.getElementById('search-form').action='/search'">{lang:My blog}</label>&nbsp;&nbsp;
+             <input type="radio" id="search-scope-all" name="scope" onclick="document.getElementById('search-form').action='http://www.tumblr.com/search'" /> <label for="search-scope-all" onclick="document.getElementById('search-form').action='http://www.tumblr.com/search'">Tumblr</label>
+         </div>
+        
+    </div>
     <div id="main" role="main">
       <section id="posts" class="clearfix">
         <div id="entries">
@@ -278,13 +292,13 @@
             <div class="entry">
                 
                 {block:Photo}
-                  <img src="http://static.tumblr.com/2fscyps/E2Mlwfesb/pic.png" class="post-img" />
+                  <img src="http://static.tumblr.com/wwordbw/DL9lxkcxw/camera.png" class="post-img" />
                     <div class="media">{LinkOpenTag}<img src="{PhotoURL-500}" alt="{PhotoAlt}" />{LinkCloseTag}</div>
                     {block:Caption}<div class="copy">{Caption}</div>{/block:Caption}
                 {/block:Photo}
                 
                 {block:Video}
-                  <img src="http://static.tumblr.com/2fscyps/rTOlwfeu7/video.png" class="post-img"/>
+                  <img src="http://static.tumblr.com/wwordbw/VdDlxkcys/video.png" class="post-img"/>
                     <div class="media">{Video-500}</div>
                     {block:Caption}<div class="copy">{Caption}</div>{/block:Caption}
                 {/block:Video}
@@ -299,6 +313,8 @@
                     {/block:IfShowAlbumArtOnAudioPosts}
                     
                     <div class="audio">
+                      <img src="http://static.tumblr.com/wwordbw/jQ9lxkcxn/audio.png" class="post-img" />
+                      
                         <div class="player">{AudioPlayerWhite}</div>
                         <div class="meta">{PlayCountWithLabel}{block:ExternalAudio}<span class="download_external_audio"> &bull; <a href="{ExternalAudioURL}">{lang:Download}</a></span>{/block:ExternalAudio}</div>
                         <div class="clear"></div>
@@ -308,7 +324,7 @@
                 {/block:Audio}
                 
                 {block:Quote}
-                <img src="http://static.tumblr.com/2fscyps/fellwfets/quote.png" class="post-img" />
+                <img src="http://static.tumblr.com/wwordbw/heRlxkd1f/quote.png" class="post-img" />
                     <div class="quote {Length}">{Quote}</div>
                     <div class="copy">
                         <div class="quotebg">“</div>
@@ -326,7 +342,7 @@
                 {/block:Quote}
                     
                 {block:Text}
-                  <img src="http://static.tumblr.com/2fscyps/1ZKlwfesw/post.png" class="post-img" />
+                  <img src="http://static.tumblr.com/wwordbw/heylxkczu/post.png" class="post-img" />
                     {block:Title}<div class="title">{Title}</div>{/block:Title}
                     <div class="copy">{Body}</div>
                 {/block:Text}
@@ -342,7 +358,7 @@
                 
                 {block:Chat}
                     {block:Title}<div class="title">{Title}</div>{/block:Title}
-                    <img src="http://static.tumblr.com/2fscyps/LXElwfejn/chat.png" class="post-img" />
+                    <img src="http://static.tumblr.com/wwordbw/5Tnlxkcx0/chat.png" class="post-img" />
                     <div class="chat">
                         <div class="lines">
                             {block:Lines}
@@ -355,7 +371,7 @@
                 {/block:Chat}
                 
                 {block:Link}
-                  <img src="http://static.tumblr.com/2fscyps/GD7lwferr/link.png" class="post-img"/>
+                  <img src="http://static.tumblr.com/wwordbw/z9wlxkcy9/link.png" class="post-img"/>
                     <div class="link"><a href="{URL}" {Target}>{Name} &raquo;</a></div>
                     {block:Description}<div class="copy">{Description}</div>{/block:Description}
                 {/block:Link}
@@ -455,20 +471,8 @@
           </div>
 
 
-      		<div id="search">
-              <form action="/search" method="get" id="search-form">
-                  <input type="hidden" name="t" value="{Name}" />
-                  <input type="hidden" name="scope" value="all_of_tumblr" />
-                  <input type="text" name="q" class="query" value="{SearchQuery}" id="search-bar" />
-                  <!-- <input type="submit" value="{lang:Search}" id="search-btn" /> -->
-                  <div class="clear"></div>
-              </form>
-          </div>
-          <div id="search-scope">
-              <input type="radio" id="search-scope-me" name="scope" checked onclick="document.getElementById('search-form').action='/search'" /> <label for="search-scope-me" onclick="document.getElementById('search-form').action='/search'">{lang:My blog}</label>&nbsp;&nbsp;
-              <input type="radio" id="search-scope-all" name="scope" onclick="document.getElementById('search-form').action='http://www.tumblr.com/search'" /> <label for="search-scope-all" onclick="document.getElementById('search-form').action='http://www.tumblr.com/search'">{lang:All of Tumblr}</label>
-          </div>
 
+ 
 
         </div>
       </section>
@@ -525,6 +529,20 @@
       $("#event-venue").html(eventVenue);
       $("#rsvp a").attr("href", eventUrl);
     });
+
+    $("#search-bar").live("blur", function(){
+            var default_value = $(this).attr("rel");
+            if ($(this).val() == ""){
+                    $(this).val(default_value);
+            }
+    }).live("focus", function(){
+            var default_value = $(this).attr("rel");
+            if ($(this).val() == default_value){
+                    $(this).val("");
+            }
+    });
+    
+    
   });
   </script>
 
