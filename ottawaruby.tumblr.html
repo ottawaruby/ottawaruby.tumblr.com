@@ -10,7 +10,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
 	
-  <link rel="shortcut icon" href="{Favicon}" />
+  <link rel="shortcut icon" href="http://static.tumblr.com/3owlau0/mB1lxnzmu/favicon.png" />
   <link rel="apple-touch-icon" href="{PortraitURL-128}"/>
   <link rel="alternate" type="application/rss+xml" href="{RSS}" />
 
@@ -251,13 +251,15 @@
   <div id="fb-root"></div>
   <div id="container">
     <header class="clearfix">
+      
+   
       <div id="logo">
         <a href="/"><img alt="Ottawa Ruby" src="http://static.tumblr.com/hncmesq/IqOlvwy4i/logo.png"></a>     
       </div>
       <div id="header-info">
         <h1><img src="http://static.tumblr.com/hncmesq/dsXlvwy4y/ottawa_ruby.png" /></h1>
         <h2>Monthly Meetup</h2>
-        <h3><span id='upcoming-event-date'>loading</span> @ <span id='event-venue'>Shopify</span></h3>
+        <h3><span id='upcoming-event-date'>loading</span> @ <a id='event-venue' href="" target="_blank">Shopify</a></h3>
         <div id="rsvp"><a href="#" class="big-button" target="_blank">RSVP!</a></div>
       </div>
     </header>
@@ -508,19 +510,32 @@
 
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="js/libs/jquery-1.6.2.min.js"><\/script>')</script>
-  <script src="/js/jquery.fittext.js"></script>
   
   <script>
   $(document).ready(function(){
     $(".entry img").parent('p').css('text-align','center');
     var url = "http://api.meetup.com/2/events?key=7f3124d78666958d1015802b334d1c&sign=true&group_id=1523801&page=1&callback=?";
+    
     $.getJSON(url, {}, function(data) {
       var eventName = data.results[0].name;
       var eventUrl = data.results[0].event_url;
       var eventVenue = data.results[0].venue.name;
+      var ven_lon = data.results[0].venue.lon;
+      var ven_lat= data.results[0].venue.lat;
+      var add1= data.results[0].venue.address_1;
+      var ven_add1 = add1.replace(/ /gi,"+");
+      var add2= data.results[0].venue.address_2;
+      var ven_add2 = add2.replace(/ /gi,"+");
+      var ven_state= data.results[0].venue.state;
+      var ven_city= data.results[0].venue.city;
+      var ven_country= data.results[0].venue.country;
+      var ven_zip = data.results[0].venue.zip;
       
+      var query= ven_add1+","+ven_city+","+ven_state+"&hl=en&sll="+ven_lon+","+ven_lat+"&t=h&z=18&vpsrc=6";
+      var map_url= "http://maps.google.ca/maps?q="+query;
       var meetupUtcSeconds = data.results[0].time / 1000;
       var d = new Date(0);
+      
       d.setUTCSeconds(meetupUtcSeconds);
       
       $('#upcoming-event-date').text(d.toLocaleDateString() + ', ' + d.getHours() + ':' + d.getMinutes());
@@ -528,6 +543,8 @@
       $("#header-info h2").html(eventName);
       $("#event-venue").html(eventVenue);
       $("#rsvp a").attr("href", eventUrl);
+      $("#event-venue").attr("href", map_url);
+      
     });
 
     $("#search-bar").live("blur", function(){
